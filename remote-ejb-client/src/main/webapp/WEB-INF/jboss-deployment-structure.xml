@@ -1,0 +1,7 @@
+<jboss-deployment-structure>
+    <deployment>
+        <dependencies>
+            <module name="io.dev.ruben.random.ejb"/>
+        </dependencies>
+    </deployment>
+</jboss-deployment-structure>

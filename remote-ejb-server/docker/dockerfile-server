@@ -1,0 +1,31 @@
+# Dockerfile para wildfly-server-1
+FROM jboss/wildfly:8.1.0.Final
+
+USER root
+
+RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+RUN sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+RUN yum -y update
+RUN yum -y remove java
+RUN yum install -y \
+        java-1.8.0-openjdk \
+        java-1.8.0-openjdk-devel
+
+USER jboss
+
+# Copiar modules
+COPY --chown=jboss:jboss lib/random_strings/randomStrings/wildfly/module/ /opt/jboss/wildfly/modules/
+COPY --chown=jboss:jboss lib/random_strings/randomStrings/target/randomStrings-1.0-SNAPSHOT.jar /opt/jboss/wildfly/modules/io/dev/ruben/random/main/randomStrings-1.0-SNAPSHOT.jar
+COPY --chown=jboss:jboss remote-ejb/ejb-connector/wildfly/module/ /opt/jboss/wildfly/modules/
+COPY --chown=jboss:jboss remote-ejb/ejb-connector/target/ejb-connector-1.0-SNAPSHOT.jar /opt/jboss/wildfly/modules/io/dev/ruben/random/ejb/main/ejb-connector-1.0-SNAPSHOT.jar
+
+# Copiar os arquivos de configuração modificados
+# COPY --chown=jboss:jboss remote-ejb/remote-ejb-server/docker/config/standalone.xml /opt/jboss/wildfly/standalone/configuration/standalone.xml
+
+# Copiar o arquivo .jar da aplicação para a pasta de deployments do Wildfly
+COPY --chown=jboss:jboss remote-ejb/remote-ejb-server/target/remote-ejb-server-1.0-SNAPSHOT.jar /opt/jboss/wildfly/standalone/deployments/remote-ejb-server-1.0-SNAPSHOT.jar
+
+
+# Expor a porta 8080 e 8443 para HTTP e HTTPS
+EXPOSE 8080 8443 9990

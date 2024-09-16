@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.3" name="io.dev.ruben.random.ejb">
+    <dependencies>
+        <module name="javax.ejb.api" export="true"/>
+    </dependencies>
+    <resources>
+        <resource-root path="ejb-connector-1.0-SNAPSHOT.jar"/> <!-- Substitua pelo nome do seu JAR -->
+    </resources>
+</module>
