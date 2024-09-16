@@ -6,6 +6,7 @@
 
 # IntelliJ Idea Files
 .idea/
+**/.idea/
 
 # BlueJ files
 *.ctxt
